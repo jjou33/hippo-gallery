@@ -2,11 +2,12 @@ import { Post } from '@/types';
 import { cn } from '@/utils/styles';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { FC, useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 
 import { IoEyeSharp, IoSearchOutline } from 'react-icons/io5';
+import PreviewItemComponent from './PreviewItem';
+import LayerPopup from './shared/Modal/LayerPopup';
 type PostCardProps = Omit<Post, 'tags'> & {
   tags: string[];
   className?: string;
@@ -20,11 +21,12 @@ const PostCard: FC<PostCardProps> = ({
 }) => {
   const [isHover, setIsHover] = useState(false);
   const [imageHover, setImageHover] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const handleImageHover = () => {
     if (!imageHover) {
-      setImageHover(true);
+      setIsOpen(true);
     } else {
-      setImageHover(false);
+      setIsOpen(false);
     }
   };
   const handleHover = () => {
@@ -34,24 +36,25 @@ const PostCard: FC<PostCardProps> = ({
       setIsHover(false);
     }
   };
+
   return (
     <div className={cn('flex flex-col overflow-hidden rounded-md')}>
-      <Link href={`/posts/${id}`} className={cn('', className)}>
-        <div
-          className="relative h-full min-h-[300px] overflow-hidden rounded-lg border"
-          onMouseEnter={handleImageHover}
-          onMouseLeave={handleImageHover}
-        >
-          <Image
-            src={preview_image_url ?? '/next.svg'}
-            fill
-            sizes="330px"
-            alt={title}
-            priority
-          />
-          {imageHover ? (
+      {/* <Link href={`/posts/${id}`} className={cn('', className)}> */}
+      <div
+        className="relative h-full min-h-[300px] cursor-pointer overflow-hidden rounded-lg border"
+        onClick={handleImageHover}
+      >
+        <Image
+          src={preview_image_url ?? '/next.svg'}
+          fill
+          sizes="330px"
+          alt={title}
+          className="transition-all duration-500 hover:scale-105"
+          priority
+        />
+        {/* {imageHover ? (
             <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-all duration-700 ease-in-out hover:opacity-100">
-              <div className="red flex h-full w-3/4 flex-col-reverse p-5">
+              <div className="flex h-full w-3/4 flex-col-reverse p-5">
                 <div className="flex w-full items-center justify-between">
                   <div className="text-white">
                     <span>{title}</span>
@@ -69,9 +72,9 @@ const PostCard: FC<PostCardProps> = ({
             </div>
           ) : (
             <></>
-          )}
-        </div>
-      </Link>
+          )} */}
+      </div>
+      {/* </Link> */}
       <div className="h-15 flex w-full justify-between pr-2 pt-3">
         <div className="flex items-center gap-3">
           <div className="flex size-7 items-center justify-center rounded-full bg-teal-400">
@@ -99,6 +102,14 @@ const PostCard: FC<PostCardProps> = ({
           </div>
         </div>
       </div>
+      <LayerPopup
+        isOpen={isOpen}
+        height={'90vh'}
+        width={'100%'}
+        onClose={() => setIsOpen(false)}
+      >
+        <PreviewItemComponent />
+      </LayerPopup>
     </div>
   );
 };
