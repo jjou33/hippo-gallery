@@ -1,0 +1,44 @@
+{
+  "extends": [
+    "next/core-web-vitals",
+    "next/typescript",
+    "plugin:tailwindcss/recommended",
+    "prettier"
+  ],
+  "rules": {
+    "no-undef": "off",
+    "spaced-comment": "off",
+    "tailwindcss/no-custom-classname": "off",
+    "tailwindcss/classnames-order": [
+      "warn",
+      {
+        "callees": ["cva", "cn"]
+      }
+    ],
+    "tailwindcss/enforces-negative-arbitrary-values": [
+      "warn",
+      {
+        "callees": ["cva", "cn"]
+      }
+    ],
+    "tailwindcss/enforces-shorthand": [
+      "warn",
+      {
+        "callees": ["cva", "cn"]
+      }
+    ],
+    "tailwindcss/no-contradicting-classname": [
+      "warn",
+      {
+        "callees": ["cva", "cn"]
+      }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx", ".svg"]
+      }
+    }
+  }
+}
