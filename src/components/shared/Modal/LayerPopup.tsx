@@ -30,13 +30,19 @@ const FullPageModal: FC<FullPageModalProps> = ({
     }, 300); // 애니메이션 지속 시간 후 onClose 실행
   };
 
+  const handleDimmedClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      handleClose();
+    }
+  };
   return (
     <div
       className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 transition-opacity duration-300 ${isOpen ? 'visible opacity-100' : 'invisible opacity-0'}`}
-      onClick={handleClose}
+      onClick={handleDimmedClick}
     >
       <div
         className={`relative flex h-[95vh] w-[${width}] max-w-screen-2xl flex-col rounded-xl border-b bg-white shadow-xl transition-transform duration-300 ease-in-out ${isOpen && !isClosing ? 'translate-y-0' : 'translate-y-full'}`}
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="h-15 flex w-full items-center justify-between border-b-2 px-5 py-2">
           <div className="flex w-full gap-3">

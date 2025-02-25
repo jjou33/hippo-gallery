@@ -1,5 +1,7 @@
 import Image from 'next/image';
+import { BsBookmarkPlus } from 'react-icons/bs';
 import { FaRegHeart } from 'react-icons/fa';
+import { VscGithub } from 'react-icons/vsc';
 
 export const PreviewItemComponent = () => {
   return (
@@ -14,9 +16,11 @@ export const PreviewItemComponent = () => {
           unoptimized
         />
       </div>
-      <div className="flex h-full w-1/4 flex-col gap-5 rounded-xl">
-        <div className="flex h-20 w-full items-center gap-5 rounded-xl border px-10 py-5">
-          <FaRegHeart size={40} />
+      <div className="flex h-full w-1/5 flex-col gap-5 rounded-xl">
+        <div className="h-15 flex w-full items-center justify-around rounded-xl border px-10 py-5">
+          <FaRegHeart size={25} />
+          <BsBookmarkPlus size={25} />
+          <VscGithub size={25} />
         </div>
         <div className="flex w-full flex-1 flex-col rounded-xl border p-5">
           <h2 className="text-2xl font-bold">레이어 팝업</h2>
