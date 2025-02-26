@@ -31,7 +31,9 @@ const config: Config = {
       fontFamily: {
         gmarket: 'var(--font-gmarket-sans)',
       },
-      colors: {},
+      colors: {
+        subBg: 'rgba(248, 251, 252, 0.65)',
+      },
       backgroundImage: {
         'bottom-shadow':
           'linear-gradient(to_bottom,rgba(20,20,20,0)_70%,rgba(20,20,20,0.1)_80%,rgba(20,20,20,0.3)_95%)',

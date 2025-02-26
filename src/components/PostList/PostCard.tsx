@@ -1,13 +1,13 @@
+import PreviewItemComponent from '#/PreviewItem';
+import LayerPopup from '#/shared/Modal/LayerPopup';
+import Image from 'next/image';
+
 import { Post } from '@/types';
 import { cn } from '@/utils/styles';
-
-import Image from 'next/image';
 import { FC, useState } from 'react';
-import { FaHeart, FaRegHeart } from 'react-icons/fa';
-
+import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { IoEyeSharp, IoSearchOutline } from 'react-icons/io5';
-import PreviewItemComponent from './PreviewItem';
-import LayerPopup from './shared/Modal/LayerPopup';
+
 type PostCardProps = Omit<Post, 'tags'> & {
   tags: string[];
   className?: string;
@@ -84,16 +84,15 @@ const PostCard: FC<PostCardProps> = ({
         </div>
 
         <div className="flex items-center gap-3">
-          <button className="group">
+          <button className="group" onClick={handleHover}>
             {!isHover ? (
-              <FaRegHeart
+              <BsHeart
                 size={20}
                 fill="gray"
-                className="group-hover:fill-pink-300"
-                onClick={handleHover}
+                className="group-hover:fill-red-500"
               />
             ) : (
-              <FaHeart size={20} fill="red" onClick={handleHover} />
+              <BsHeartFill size={20} fill="red" onClick={handleHover} />
             )}
           </button>
           <div className="flex items-center justify-center gap-2">
@@ -105,7 +104,7 @@ const PostCard: FC<PostCardProps> = ({
       <LayerPopup
         isOpen={isOpen}
         height={'90vh'}
-        width={'100%'}
+        width={'90%'}
         onClose={() => setIsOpen(false)}
       >
         <PreviewItemComponent />
