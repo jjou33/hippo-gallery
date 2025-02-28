@@ -1,4 +1,7 @@
+'use client';
+
 import Image from 'next/image';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { AiFillLike, AiOutlineLike } from 'react-icons/ai';
 import { BsBookmark, BsBookmarkFill } from 'react-icons/bs';
@@ -7,11 +10,12 @@ import Lottie from 'react-lottie-player';
 import checkAnimation from '~/assets/check.json';
 import fireAnimation from '~/assets/fire.json';
 import animationData from '~/assets/go.json';
-export const PreviewItemComponent = () => {
+export const PreviewItemComponent = (type: { type: string }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-
+  const router = useRouter();
+  const pathname = usePathname();
   const handleLikebtn = () => {
     setIsLiked(!isLiked);
   };
@@ -30,6 +34,10 @@ export const PreviewItemComponent = () => {
     } else {
       setIsPlaying(true);
     }
+  };
+
+  const handleHardNavigating = () => {
+    location.reload();
   };
   return (
     <div className="bg-subBg flex h-full w-full items-center justify-center gap-3 rounded-xl p-5">
@@ -126,7 +134,10 @@ export const PreviewItemComponent = () => {
           onMouseEnter={handleLottieIcon}
           onMouseLeave={handleLottieIcon}
         >
-          <button className="flex items-center justify-center gap-2">
+          <button
+            className="flex items-center justify-center gap-2"
+            onClick={handleHardNavigating}
+          >
             <span className="text-sm">GO TO ANIMATION PAGE</span>
 
             <Lottie

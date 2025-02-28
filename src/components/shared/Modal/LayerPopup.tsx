@@ -1,8 +1,10 @@
-import { FC, ReactNode, useEffect, useState } from 'react';
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { FC, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { IoClose } from 'react-icons/io5';
 interface FullPageModalProps {
   isOpen: boolean;
-  onClose: () => void;
   children: ReactNode;
   width: String;
   height: String;
@@ -10,23 +12,45 @@ interface FullPageModalProps {
 
 const FullPageModal: FC<FullPageModalProps> = ({
   isOpen,
-  onClose,
   children,
   width = '50vw',
   height = '50vh',
 }) => {
+  const router = useRouter();
+  const modalRef = useRef<HTMLDivElement | null>(null);
   const [isClosing, setIsClosing] = useState(false);
+
+  const [isFirstRender, setIsFirstRender] = useState(false);
+
+  const handlePopState = useCallback(() => {
+    console.log('HELLO WORLD');
+    // debugger;
+    if (isOpen) {
+      setIsClosing(true);
+      setTimeout(() => {
+        router.back();
+      }, 300);
+    }
+  }, [isOpen, router]);
 
   useEffect(() => {
     if (isOpen) {
-      setIsClosing(false); // 모달이 다시 열릴 때 초기화
+      setIsClosing(false);
+      // router.push('?modal=true', { scroll: false }); // URL 업데이트
+      // window.history.pushState({ modal: true }, '', location.href);
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
   const handleClose = () => {
     setIsClosing(true);
     setTimeout(() => {
-      onClose();
+      router.back();
     }, 300); // 애니메이션 지속 시간 후 onClose 실행
   };
 
@@ -37,6 +61,9 @@ const FullPageModal: FC<FullPageModalProps> = ({
   };
   return (
     <div
+      suppressHydrationWarning
+      ref={modalRef}
+      tabIndex={-1}
       className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 transition-opacity duration-300 ${isOpen ? 'visible opacity-100' : 'invisible opacity-0'}`}
       onClick={handleDimmedClick}
     >
