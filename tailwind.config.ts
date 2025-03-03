@@ -27,6 +27,7 @@ const config: Config = {
     extend: {
       screens: {
         'xl-custom': '1300px',
+        '3xl': '2000px',
       },
       fontFamily: {
         gmarket: 'var(--font-gmarket-sans)',

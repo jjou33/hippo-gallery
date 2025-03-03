@@ -1,30 +1,28 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { FC, ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, ReactNode, useCallback, useEffect, useState } from 'react';
 import { IoClose } from 'react-icons/io5';
 interface FullPageModalProps {
   isOpen: boolean;
   children: ReactNode;
-  width: String;
-  height: String;
+  width: string;
+  height: string;
 }
 
 const FullPageModal: FC<FullPageModalProps> = ({
-  isOpen,
+  // isOpen,
   children,
   width = '50vw',
   height = '50vh',
+  onClose,
 }) => {
   const router = useRouter();
-  const modalRef = useRef<HTMLDivElement | null>(null);
-  const [isClosing, setIsClosing] = useState(false);
 
-  const [isFirstRender, setIsFirstRender] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handlePopState = useCallback(() => {
-    console.log('HELLO WORLD');
-    // debugger;
     if (isOpen) {
       setIsClosing(true);
       setTimeout(() => {
@@ -34,19 +32,12 @@ const FullPageModal: FC<FullPageModalProps> = ({
   }, [isOpen, router]);
 
   useEffect(() => {
-    if (isOpen) {
-      setIsClosing(false);
-      // router.push('?modal=true', { scroll: false }); // URL 업데이트
-      // window.history.pushState({ modal: true }, '', location.href);
-    }
-  }, [isOpen]);
-
-  useEffect(() => {
+    setIsOpen(true);
     window.addEventListener('popstate', handlePopState);
     return () => {
       window.removeEventListener('popstate', handlePopState);
     };
-  }, []);
+  }, [handlePopState]);
   const handleClose = () => {
     setIsClosing(true);
     setTimeout(() => {
@@ -61,14 +52,12 @@ const FullPageModal: FC<FullPageModalProps> = ({
   };
   return (
     <div
-      suppressHydrationWarning
-      ref={modalRef}
-      tabIndex={-1}
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 transition-opacity duration-300 ${isOpen ? 'visible opacity-100' : 'invisible opacity-0'}`}
+      // eslint-disable-next-line tailwindcss/migration-from-tailwind-2
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 transition-opacity duration-500 ${isOpen ? 'visible opacity-100' : 'invisible opacity-0'}`}
       onClick={handleDimmedClick}
     >
       <div
-        className={`relative flex h-[95vh] w-[90%] max-w-screen-2xl flex-col rounded-xl bg-white shadow-xl transition-transform duration-300 ease-in-out ${isOpen && !isClosing ? 'translate-y-0' : 'translate-y-full'}`}
+        className={`relative flex h-[95vh] w-[90%] max-w-screen-3xl flex-col rounded-xl bg-white shadow-xl transition-transform duration-300 ease-in-out ${isOpen && !isClosing ? 'translate-y-0' : 'translate-y-full'}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="h-15 flex w-full items-center justify-between rounded-t-xl border-b px-5 py-2">
@@ -84,7 +73,7 @@ const FullPageModal: FC<FullPageModalProps> = ({
             <IoClose />
           </button>
         </div>
-        <div className="flex h-full w-full items-center justify-center overflow-auto">
+        <div className="flex size-full items-center justify-center overflow-auto">
           {children}
         </div>
       </div>

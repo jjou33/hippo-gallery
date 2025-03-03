@@ -20,6 +20,7 @@ const IconButton = <Component extends ElementType = 'button'>({
   ...props
 }: IconButtonProps<Component>) => {
   return createElement(
+
     component ?? 'button',
     {
       className: cn(isItem ? className : 'p-1.5 lg:p-2', className),

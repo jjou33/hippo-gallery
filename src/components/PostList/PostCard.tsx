@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { FC, useState } from 'react';
 import { BsHeart, BsHeartFill } from 'react-icons/bs';
 import { IoEyeSharp, IoSearchOutline } from 'react-icons/io5';
-
 type PostCardProps = Omit<Post, 'tags'> & {
   tags: string[];
   className?: string;
