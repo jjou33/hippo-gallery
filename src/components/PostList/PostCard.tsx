@@ -18,7 +18,7 @@ const PostCard: FC<PostCardProps> = ({
   className,
 }) => {
   const [isHover, setIsHover] = useState(false);
-
+  const [imageHover, setImageHover] = useState(false);
   const handleHover = () => {
     if (!isHover) {
       setIsHover(true);
@@ -30,7 +30,11 @@ const PostCard: FC<PostCardProps> = ({
   return (
     <div className={cn('flex flex-col overflow-hidden rounded-md')}>
       <Link href={`/preview/${id}`} className={cn('', className)} key={id}>
-        <div className="relative h-full min-h-[300px] cursor-pointer overflow-hidden rounded-lg border">
+        <div
+          className="relative h-full min-h-[300px] cursor-pointer overflow-hidden rounded-lg border"
+          onMouseEnter={() => setImageHover(true)}
+          onMouseLeave={() => setImageHover(false)}
+        >
           <Image
             src={preview_image_url ?? '/next.svg'}
             fill
@@ -39,9 +43,9 @@ const PostCard: FC<PostCardProps> = ({
             className="transition-all duration-500 hover:scale-105"
             priority
           />
-          {/* {imageHover ? (
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-all duration-700 ease-in-out hover:opacity-100">
-              <div className="flex h-full w-3/4 flex-col-reverse p-5">
+          {imageHover ? (
+            <div className="absolute inset-0 flex items-end justify-center opacity-0 transition-opacity duration-1000 ease-in-out hover:opacity-100">
+              <div className="flex h-1/3 w-full items-end bg-gradient-to-t from-gray-400 to-transparent p-5">
                 <div className="flex w-full items-center justify-between">
                   <div className="text-white">
                     <span>{title}</span>
@@ -59,7 +63,7 @@ const PostCard: FC<PostCardProps> = ({
             </div>
           ) : (
             <></>
-          )} */}
+          )}
         </div>
       </Link>
       <div className="h-15 flex w-full justify-between pr-2 pt-3">

@@ -71,7 +71,7 @@ const PostList: FC<PostListProps> = ({
   }, [inView, hasNextPage, fetchNextPage]);
 
   return (
-    <div className={cn('flex flex-col items-center gap-8 pt-20', className)}>
+    <div className={cn('flex flex-col items-center gap-8 pt-10', className)}>
       <h1 className={cn('text-2xl font-medium', !category && !tag && 'hidden')}>
         {category ? category : `#${tag}`}
       </h1>

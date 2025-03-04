@@ -13,7 +13,7 @@ import checkAnimation from '~/assets/check.json';
 import fireAnimation from '~/assets/fire.json';
 import animationData from '~/assets/go.json';
 export const PreviewItemComponent = ({ id }: { id: string }) => {
-  const { isCopied, copyToClipboar } = useClipboard();
+  const { copyToClipboar } = useClipboard();
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
