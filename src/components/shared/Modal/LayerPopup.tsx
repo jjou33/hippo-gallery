@@ -29,6 +29,7 @@ const FullPageModal: FC<FullPageModalProps> = ({ children }) => {
       window.removeEventListener('popstate', handlePopState);
     };
   }, [handlePopState]);
+
   const handleClose = () => {
     setIsClosing(true);
     setTimeout(() => {
@@ -47,7 +48,7 @@ const FullPageModal: FC<FullPageModalProps> = ({ children }) => {
       onClick={handleDimmedClick}
     >
       <div
-        className={`max-w-screen-3xl relative flex h-[95vh] w-[90%] flex-col rounded-xl bg-white shadow-xl transition-transform duration-300 ease-in-out ${isOpen && !isClosing ? 'translate-y-0' : 'translate-y-full'}`}
+        className={`relative flex h-[95vh] w-[90%] max-w-screen-3xl flex-col rounded-xl bg-white shadow-xl transition-transform duration-300 ease-in-out ${isOpen && !isClosing ? 'translate-y-0' : 'translate-y-full'}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="h-15 flex w-full items-center justify-between rounded-t-xl border-b px-5 py-2">

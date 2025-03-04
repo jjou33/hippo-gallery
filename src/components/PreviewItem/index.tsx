@@ -1,8 +1,11 @@
 'use client';
 
+import { useClipboard } from '@/hooks/useClipboar';
+import { useToastStore } from '@/stores/useToastStore';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { AiFillLike, AiOutlineLike } from 'react-icons/ai';
+import { AiFillLike, AiOutlineLike, AiOutlineShareAlt } from 'react-icons/ai';
 import { BsBookmark, BsBookmarkFill } from 'react-icons/bs';
 import { VscGithub } from 'react-icons/vsc';
 import Lottie from 'react-lottie-player';
@@ -10,10 +13,19 @@ import checkAnimation from '~/assets/check.json';
 import fireAnimation from '~/assets/fire.json';
 import animationData from '~/assets/go.json';
 export const PreviewItemComponent = ({ id }: { id: string }) => {
+  const { isCopied, copyToClipboar } = useClipboard();
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const { showToast } = useToastStore();
+  const pathname = usePathname();
+  const fullUrl =
+    typeof window !== 'undefined' ? window.location.origin + pathname : '';
 
+  const handleClipboard = () => {
+    copyToClipboar(fullUrl);
+    showToast('Copied to clipboard', 'success');
+  };
   const handleLikebtn = () => {
     setIsLiked(!isLiked);
   };
@@ -38,7 +50,7 @@ export const PreviewItemComponent = ({ id }: { id: string }) => {
     location.reload();
   };
   return (
-    <div className="bg-subBg flex size-full items-center justify-center gap-3 rounded-xl p-5">
+    <div className="flex size-full items-center justify-center gap-3 rounded-xl bg-subBg p-5">
       <div className="relative flex h-full flex-1 flex-col overflow-hidden rounded-xl p-5">
         <Image
           src="/heroBackground.gif"
@@ -120,6 +132,11 @@ export const PreviewItemComponent = ({ id }: { id: string }) => {
               className="transition-all duration-300 hover:scale-125"
             />
           </a>
+          <AiOutlineShareAlt
+            size={20}
+            onClick={handleClipboard}
+            className="cursor-pointer transition-all duration-300 hover:scale-125"
+          />
         </div>
         <div className="flex w-full flex-1 flex-col rounded-xl bg-white p-5 shadow-lg">
           <h2 className="text-2xl font-bold">레이어 팝업 {`${id}`}</h2>

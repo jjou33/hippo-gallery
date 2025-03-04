@@ -1,6 +1,7 @@
 import Footer from '#/shared/Footer';
 import Header from '#/shared/Header';
 import Providers from '@/components/Providers';
+import Toast from '@/components/shared/ToastComponent';
 import { gmarketSans } from '@/styles/fonts';
 import '@/styles/globals.css';
 import { cn } from '@/utils/styles';
@@ -46,6 +47,7 @@ export default function RootLayout({
               {children}
               {modal}
             </main>
+            <Toast />
             <Footer />
           </div>
         </Providers>
