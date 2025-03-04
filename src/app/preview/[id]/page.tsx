@@ -1,3 +1,4 @@
+import PreviewItemComponent from '@/components/PreviewItem';
 import { createClient } from '@/utils/supabase/server';
 
 export const generateStaticParams = async () => {
@@ -6,26 +7,15 @@ export const generateStaticParams = async () => {
   return data?.map(({ id }) => ({ params: { id: String(id) } })) ?? [];
 };
 
-export default async function PreviewPage({
-  params,
-}: {
-  params: { id: string };
+export default async function PreviewPage(props: {
+  params: Promise<{ id: string }>;
 }) {
-  // const supabase = await createClient(cookies());
-  // const { data } = await supabase
-  //   .from('Post')
-  //   .select('*')
-  //   .eq('id', Number(params.id));
+  const { params } = props;
 
-  // if (!data || !data[0]) {
-  //   return { notFound: true };
-  // }
-
-  // const { tags, ...rest } = data[0];
   return (
-    <div>
+    <div className="flex size-full flex-col items-center justify-center">
       <h1>DEFAULT PAGE</h1>
-      {/* <PreviewItemComponent /> */}
+      <PreviewItemComponent id={(await params).id} />
     </div>
   );
 }

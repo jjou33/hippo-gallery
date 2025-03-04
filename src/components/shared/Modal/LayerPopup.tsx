@@ -4,19 +4,10 @@ import { useRouter } from 'next/navigation';
 import { FC, ReactNode, useCallback, useEffect, useState } from 'react';
 import { IoClose } from 'react-icons/io5';
 interface FullPageModalProps {
-  isOpen: boolean;
   children: ReactNode;
-  width: string;
-  height: string;
 }
 
-const FullPageModal: FC<FullPageModalProps> = ({
-  // isOpen,
-  children,
-  width = '50vw',
-  height = '50vh',
-  onClose,
-}) => {
+const FullPageModal: FC<FullPageModalProps> = ({ children }) => {
   const router = useRouter();
 
   const [isClosing, setIsClosing] = useState(false);
@@ -52,12 +43,11 @@ const FullPageModal: FC<FullPageModalProps> = ({
   };
   return (
     <div
-      // eslint-disable-next-line tailwindcss/migration-from-tailwind-2
       className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 transition-opacity duration-500 ${isOpen ? 'visible opacity-100' : 'invisible opacity-0'}`}
       onClick={handleDimmedClick}
     >
       <div
-        className={`relative flex h-[95vh] w-[90%] max-w-screen-3xl flex-col rounded-xl bg-white shadow-xl transition-transform duration-300 ease-in-out ${isOpen && !isClosing ? 'translate-y-0' : 'translate-y-full'}`}
+        className={`max-w-screen-3xl relative flex h-[95vh] w-[90%] flex-col rounded-xl bg-white shadow-xl transition-transform duration-300 ease-in-out ${isOpen && !isClosing ? 'translate-y-0' : 'translate-y-full'}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="h-15 flex w-full items-center justify-between rounded-t-xl border-b px-5 py-2">

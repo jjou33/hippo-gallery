@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { AiFillLike, AiOutlineLike } from 'react-icons/ai';
 import { BsBookmark, BsBookmarkFill } from 'react-icons/bs';
@@ -10,12 +9,11 @@ import Lottie from 'react-lottie-player';
 import checkAnimation from '~/assets/check.json';
 import fireAnimation from '~/assets/fire.json';
 import animationData from '~/assets/go.json';
-export const PreviewItemComponent = (type: { type: string }) => {
+export const PreviewItemComponent = ({ id }: { id: string }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const router = useRouter();
-  const pathname = usePathname();
+
   const handleLikebtn = () => {
     setIsLiked(!isLiked);
   };
@@ -40,7 +38,7 @@ export const PreviewItemComponent = (type: { type: string }) => {
     location.reload();
   };
   return (
-    <div className="bg-subBg flex h-full w-full items-center justify-center gap-3 rounded-xl p-5">
+    <div className="bg-subBg flex size-full items-center justify-center gap-3 rounded-xl p-5">
       <div className="relative flex h-full flex-1 flex-col overflow-hidden rounded-xl p-5">
         <Image
           src="/heroBackground.gif"
@@ -53,7 +51,7 @@ export const PreviewItemComponent = (type: { type: string }) => {
       </div>
       <div className="flex h-full w-[280px] flex-col gap-5 rounded-xl">
         <div className="h-15 flex w-full items-center justify-around rounded-xl bg-white px-10 py-5 shadow-lg transition-all duration-300 hover:shadow-lg">
-          <div className="bg-green relative">
+          <div className="relative">
             {isLiked ? (
               <Lottie
                 loop={false}
@@ -84,7 +82,7 @@ export const PreviewItemComponent = (type: { type: string }) => {
               )}
             </button>
           </div>
-          <div className="bg-green relative flex">
+          <div className="relative flex">
             {isBookmarked ? (
               <Lottie
                 loop={false}
@@ -124,7 +122,7 @@ export const PreviewItemComponent = (type: { type: string }) => {
           </a>
         </div>
         <div className="flex w-full flex-1 flex-col rounded-xl bg-white p-5 shadow-lg">
-          <h2 className="text-2xl font-bold">레이어 팝업</h2>
+          <h2 className="text-2xl font-bold">레이어 팝업 {`${id}`}</h2>
           <p className="mt-4 text-gray-600">
             이 팝업은 전체 화면을 덮고, 애니메이션과 함께 나타납니다.
           </p>

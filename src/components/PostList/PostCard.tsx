@@ -12,21 +12,13 @@ type PostCardProps = Omit<Post, 'tags'> & {
 };
 const PostCard: FC<PostCardProps> = ({
   id,
-  content,
+  // content,
   preview_image_url,
   title,
   className,
 }) => {
   const [isHover, setIsHover] = useState(false);
-  const [imageHover, setImageHover] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const handleImageHover = () => {
-    if (!imageHover) {
-      setIsOpen(true);
-    } else {
-      setIsOpen(false);
-    }
-  };
+
   const handleHover = () => {
     if (!isHover) {
       setIsHover(true);
@@ -38,10 +30,7 @@ const PostCard: FC<PostCardProps> = ({
   return (
     <div className={cn('flex flex-col overflow-hidden rounded-md')}>
       <Link href={`/preview/${id}`} className={cn('', className)} key={id}>
-        <div
-          className="relative h-full min-h-[300px] cursor-pointer overflow-hidden rounded-lg border"
-          onClick={handleImageHover}
-        >
+        <div className="relative h-full min-h-[300px] cursor-pointer overflow-hidden rounded-lg border">
           <Image
             src={preview_image_url ?? '/next.svg'}
             fill
@@ -99,14 +88,6 @@ const PostCard: FC<PostCardProps> = ({
           </div>
         </div>
       </div>
-      {/* <LayerPopup
-        isOpen={isOpen}
-        height={'90vh'}
-        width={'90%'}
-        onClose={() => setIsOpen(false)}
-      >
-        <PreviewItemComponent />
-      </LayerPopup> */}
     </div>
   );
 };
