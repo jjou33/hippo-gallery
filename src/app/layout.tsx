@@ -1,7 +1,7 @@
+import Providers from '#/Providers';
 import Footer from '#/shared/Footer';
 import Header from '#/shared/Header';
-import Providers from '@/components/Providers';
-import Toast from '@/components/shared/ToastComponent';
+import Toast from '#/shared/ToastComponent';
 import { gmarketSans } from '@/styles/fonts';
 import '@/styles/globals.css';
 import { cn } from '@/utils/styles';

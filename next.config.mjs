@@ -1,6 +1,7 @@
 import removeImports from 'next-remove-imports';
 
 const removeImportsFun = removeImports({});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -9,7 +10,8 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'yenphrzelwcfgsakdphk.supabase.co',
+        hostname:
+          'yenphrzelwcfgsakdphk.supabase.co',
         port: '',
         pathname: '/storage/v1/object/public/**',
       },

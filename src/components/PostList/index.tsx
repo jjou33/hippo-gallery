@@ -1,6 +1,7 @@
 'use client';
 
 import { Post } from '@/types';
+import { getPosts } from '@/utils/fetch';
 import { cn } from '@/utils/styles';
 import { createClient } from '@/utils/supabase/client';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -31,9 +32,24 @@ const PostList: FC<PostListProps> = ({
   } = useInfiniteQuery({
     queryKey: ['posts', category, tag],
     queryFn: async ({ pageParam }) => {
-      let request = supabase.from('Post').select('*');
-      if (category) request = request.eq('subcategory', category);
-      if (tag) request = request.like('tags', `%${tag}%`);
+      const posts = getPosts({
+        category,
+        tag,
+        page: pageParam,
+      });
+      let request = supabase
+        .from('Post')
+        .select('*');
+      if (category)
+        request = request.eq(
+          'subcategory',
+          category
+        );
+      if (tag)
+        request = request.like(
+          'tags',
+          `%${tag}%`
+        );
       const { data } = await request
         .order('created_at', { ascending: false })
         .range(pageParam, pageParam + 4);
@@ -48,7 +64,10 @@ const PostList: FC<PostListProps> = ({
           ...post,
           tags: JSON.parse(post.tags) as string[],
         })),
-        nextPage: data.length === 5 ? pageParam + 5 : null,
+        nextPage:
+          data.length === 5
+            ? pageParam + 5
+            : null,
       };
     },
     initialData: initialPosts
@@ -56,14 +75,18 @@ const PostList: FC<PostListProps> = ({
           pages: [
             {
               posts: initialPosts,
-              nextPage: initialPosts.length === 5 ? 5 : null,
+              nextPage:
+                initialPosts.length === 5
+                  ? 5
+                  : null,
             },
           ],
           pageParams: [0],
         }
       : undefined,
     initialPageParam: 0,
-    getNextPageParam: (lastPage) => lastPage.nextPage,
+    getNextPageParam: (lastPage) =>
+      lastPage.nextPage,
   });
 
   useEffect(() => {
@@ -71,14 +94,26 @@ const PostList: FC<PostListProps> = ({
   }, [inView, hasNextPage, fetchNextPage]);
 
   return (
-    <div className={cn('flex flex-col items-center gap-8 pt-10', className)}>
-      <h1 className={cn('text-2xl font-medium', !category && !tag && 'hidden')}>
+    <div
+      className={cn(
+        'flex flex-col items-center gap-8 pt-10',
+        className
+      )}
+    >
+      <h1
+        className={cn(
+          'text-2xl font-medium',
+          !category && !tag && 'hidden'
+        )}
+      >
         {category ? category : `#${tag}`}
       </h1>
       <div className="grid w-full max-w-[1700px] grid-cols-3 gap-x-6 gap-y-4 px-20 pb-24 lg:gap-12 xl-custom:grid-cols-4">
         {postPages?.pages
           .flatMap((page) => page.posts)
-          .map((post) => <PostCard key={post.id} {...post} />)}
+          .map((post) => (
+            <PostCard key={post.id} {...post} />
+          ))}
         <div ref={ref} />
       </div>
     </div>
