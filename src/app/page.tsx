@@ -1,11 +1,8 @@
-import PostList from '@/components/PostList';
-import { createClient } from '@/utils/supabase/server';
+import { PostList } from '@/components/post-list';
+import { getPosts } from '@/utils/fetch';
 
 export default async function Home() {
-  const supabase = await createClient();
-  const { data } = await supabase
-    .from('Post')
-    .select('*');
+  const posts = await getPosts({});
 
   return (
     <div className="size-full">
@@ -26,14 +23,7 @@ export default async function Home() {
         </div>
       </div>
       <div className="flex-1">
-        <PostList
-          initialPosts={data?.map((post) => ({
-            ...post,
-            tags: JSON.parse(
-              post.tags
-            ) as string[],
-          }))}
-        />
+        <PostList initialPosts={posts} />
       </div>
     </div>
   );

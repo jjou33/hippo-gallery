@@ -12,7 +12,6 @@ export const getPosts = cache(
     tag?: string;
     page?: number;
   }) => {
-    // 서버 환경 확인
     const supabase =
       typeof window === 'undefined'
         ? createServerClient()
