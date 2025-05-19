@@ -5,7 +5,7 @@ import { useCallback, useState } from 'react';
 export const useClipboard = () => {
   const [isCopied, setIsCopied] = useState(false);
 
-  const copyToClipboar = useCallback(async (text: string) => {
+  const copyToClipboard = useCallback(async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
       setIsCopied(true);
@@ -15,5 +15,5 @@ export const useClipboard = () => {
     }
   }, []);
 
-  return { isCopied, copyToClipboar };
+  return { isCopied, copyToClipboard };
 };

@@ -12,43 +12,75 @@ import Lottie from 'react-lottie-player';
 import checkAnimation from '~/assets/check.json';
 import fireAnimation from '~/assets/fire.json';
 import animationData from '~/assets/go.json';
-export const PreviewItemComponent = ({ id }: { id: string }) => {
-  const { copyToClipboar } = useClipboard();
+
+interface PreviewItemProps {
+  id: string;
+}
+
+interface StyleProps {
+  width: number;
+  height: number;
+  position?: 'absolute';
+  left?: number;
+  top?: number;
+  zIndex?: number;
+}
+
+export const PreviewItemComponent = ({ id }: PreviewItemProps) => {
+  const { copyToClipboard } = useClipboard();
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const { showToast } = useToastStore();
   const pathname = usePathname();
+
   const fullUrl =
     typeof window !== 'undefined' ? window.location.origin + pathname : '';
 
   const handleClipboard = () => {
-    copyToClipboar(fullUrl);
+    copyToClipboard(fullUrl);
     showToast('Copied to clipboard', 'success');
   };
-  const handleLikebtn = () => {
-    setIsLiked(!isLiked);
+
+  const handleLikeToggle = () => {
+    setIsLiked((prevState) => !prevState);
   };
 
-  const handleBookmark = () => {
-    setIsBookmarked(!isBookmarked);
+  const handleBookmarkToggle = () => {
+    setIsBookmarked((prevState) => !prevState);
   };
 
-  const handleGithub = () => {
-    console.log('github');
+  const handleLottieToggle = () => {
+    setIsPlaying((prevState) => !prevState);
   };
 
-  const handleLottieIcon = () => {
-    if (isPlaying) {
-      setIsPlaying(false);
-    } else {
-      setIsPlaying(true);
-    }
+  const handleReload = () => {
+    window.location.reload();
   };
 
-  const handleHardNavigating = () => {
-    location.reload();
+  const fireLottieStyle: StyleProps = {
+    width: 80,
+    height: 80,
+    position: 'absolute',
+    left: -30,
+    top: -45,
+    zIndex: 1,
   };
+
+  const checkLottieStyle: StyleProps = {
+    width: 30,
+    height: 30,
+    position: 'absolute',
+    left: 5,
+    top: -15,
+    zIndex: 1,
+  };
+
+  const animationLottieStyle: StyleProps = {
+    width: 100,
+    height: 100,
+  };
+
   return (
     <div className="flex size-full items-center justify-center gap-3 rounded-xl bg-subBg p-5">
       <div className="relative flex h-full flex-1 flex-col overflow-hidden rounded-xl p-5">
@@ -56,7 +88,7 @@ export const PreviewItemComponent = ({ id }: { id: string }) => {
           src="/heroBackground.gif"
           alt="Hero Background"
           fill
-          sizes={'(max-width: 780px) 100vw, 80vw'}
+          sizes="(max-width: 780px) 100vw, 80vw"
           priority
           unoptimized
         />
@@ -64,22 +96,19 @@ export const PreviewItemComponent = ({ id }: { id: string }) => {
       <div className="flex h-full w-[280px] flex-col gap-5 rounded-xl">
         <div className="h-15 flex w-full items-center justify-around rounded-xl bg-white px-10 py-5 shadow-lg transition-all duration-300 hover:shadow-lg">
           <div className="relative">
-            {isLiked ? (
+            {isLiked && (
               <Lottie
                 loop={false}
                 animationData={fireAnimation}
                 play={true}
-                style={{
-                  width: 80,
-                  height: 80,
-                  position: 'absolute',
-                  left: -30,
-                  top: -45,
-                  zIndex: 1,
-                }}
+                style={fireLottieStyle}
               />
-            ) : null}
-            <button onClick={handleLikebtn} className="relative z-10">
+            )}
+            <button
+              onClick={handleLikeToggle}
+              className="relative z-10"
+              aria-label={isLiked ? 'Unlike' : 'Like'}
+            >
               {isLiked ? (
                 <AiFillLike
                   size={25}
@@ -95,27 +124,21 @@ export const PreviewItemComponent = ({ id }: { id: string }) => {
             </button>
           </div>
           <div className="relative flex">
-            {isBookmarked ? (
+            {isBookmarked && (
               <Lottie
                 loop={false}
                 animationData={checkAnimation}
                 play={true}
-                style={{
-                  width: 30,
-                  height: 30,
-                  position: 'absolute',
-                  left: 5,
-                  top: -15,
-                  zIndex: 1,
-                }}
+                style={checkLottieStyle}
               />
-            ) : null}
+            )}
             <button
-              onClick={handleBookmark}
+              onClick={handleBookmarkToggle}
               className="relative z-10 transition-all duration-300 hover:scale-125"
+              aria-label={isBookmarked ? 'Remove bookmark' : 'Add bookmark'}
             >
               {isBookmarked ? (
-                <BsBookmarkFill size={20} fill="teal" className="" />
+                <BsBookmarkFill size={20} fill="teal" />
               ) : (
                 <BsBookmark size={20} className="fill-green-500" />
               )}
@@ -125,41 +148,42 @@ export const PreviewItemComponent = ({ id }: { id: string }) => {
             href="https://github.com/jjou33"
             target="_blank"
             rel="noreferrer noopener"
+            aria-label="Visit GitHub profile"
           >
             <VscGithub
               size={20}
-              onClick={handleGithub}
               className="transition-all duration-300 hover:scale-125"
             />
           </a>
-          <AiOutlineShareAlt
-            size={20}
+          <button
             onClick={handleClipboard}
             className="cursor-pointer transition-all duration-300 hover:scale-125"
-          />
+            aria-label="Share link"
+          >
+            <AiOutlineShareAlt size={20} />
+          </button>
         </div>
         <div className="flex w-full flex-1 flex-col rounded-xl bg-white p-5 shadow-lg">
-          <h2 className="text-2xl font-bold">레이어 팝업 {`${id}`}</h2>
+          <h2 className="text-2xl font-bold">레이어 팝업 {id}</h2>
           <p className="mt-4 text-gray-600">
             이 팝업은 전체 화면을 덮고, 애니메이션과 함께 나타납니다.
           </p>
         </div>
         <div
           className="h-15 flex w-full cursor-pointer justify-center rounded-xl bg-white p-1 shadow-lg transition-all duration-300"
-          onMouseEnter={handleLottieIcon}
-          onMouseLeave={handleLottieIcon}
+          onMouseEnter={handleLottieToggle}
+          onMouseLeave={handleLottieToggle}
         >
           <button
             className="flex items-center justify-center gap-2"
-            onClick={handleHardNavigating}
+            onClick={handleReload}
           >
             <span className="text-sm">GO TO ANIMATION PAGE</span>
-
             <Lottie
               loop={true}
               animationData={animationData}
               play={isPlaying}
-              style={{ width: 100, height: 100 }}
+              style={animationLottieStyle}
             />
           </button>
         </div>

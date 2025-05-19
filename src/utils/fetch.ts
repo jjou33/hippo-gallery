@@ -17,17 +17,9 @@ export const getPosts = cache(
         ? createServerClient()
         : createBrowserClient();
 
-    console.log('HELLO : ', supabase);
-    let request = supabase
-      .from('Post')
-      .select('*');
-    if (category)
-      request = request.eq(
-        'subcategory',
-        category
-      );
-    if (tag)
-      request = request.like('tags', `%${tag}%`);
+    let request = supabase.from('Post').select('*');
+    if (category) request = request.eq('subcategory', category);
+    if (tag) request = request.like('tags', `%${tag}%`);
 
     const { data } = await request
       .order('created_at', { ascending: false })
@@ -40,50 +32,37 @@ export const getPosts = cache(
   }
 );
 
-// export const getPost = cache(
-//   async (id: number) => {
-//     const supabase =
-//       typeof window === 'undefined'
-//         ? await createServerClient()
-//         : createBrowserClient();
+export const getPost = cache(async (id: string) => {
+  const supabase =
+    typeof window === 'undefined'
+      ? createServerClient()
+      : createBrowserClient();
 
-//     const { data } = await supabase
-//       .from('Post')
-//       .select('*')
-//       .eq('id', id);
+  const { data } = await supabase.from('Post').select('*').eq('id', id);
 
-//     if (!data) return null;
-//     return {
-//       ...data[0],
-//       tags: JSON.parse(data[0].tags) as string[],
-//     };
-//   }
-// );
+  if (!data) return null;
+  return {
+    ...data[0],
+    tags: JSON.parse(data[0].tags) as string[],
+  };
+});
 
-// export const getTags = cache(async () => {
-//   const supabase =
-//     typeof window === 'undefined'
-//       ? await createServerClient()
-//       : createBrowserClient();
-//   const { data } = await supabase
-//     .from('Post')
-//     .select('tags');
-//   return Array.from(
-//     new Set(
-//       data?.flatMap((d) => JSON.parse(d.tags))
-//     )
-//   ) as string[];
-// });
+export const getTags = cache(async () => {
+  const supabase =
+    typeof window === 'undefined'
+      ? createServerClient()
+      : createBrowserClient();
+  const { data } = await supabase.from('Post').select('tags');
+  return Array.from(
+    new Set(data?.flatMap((d) => JSON.parse(d.tags)))
+  ) as string[];
+});
 
-// export const getCategories = cache(async () => {
-//   const supabase =
-//     typeof window === 'undefined'
-//       ? await createServerClient()
-//       : createBrowserClient();
-//   const { data } = await supabase
-//     .from('Post')
-//     .select('category');
-//   return Array.from(
-//     new Set(data?.map((d) => d.category))
-//   ) as string[];
-// });
+export const getCategories = cache(async () => {
+  const supabase =
+    typeof window === 'undefined'
+      ? createServerClient()
+      : createBrowserClient();
+  const { data } = await supabase.from('Post').select('category');
+  return Array.from(new Set(data?.map((d) => d.category))) as string[];
+});
